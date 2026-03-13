@@ -1,6 +1,6 @@
 BUILD_VERSION ?= "unknown"
 
-OUTPUT_NAME := "template"
+OUTPUT_NAME := "$"
 
 clean:
 	@rm -rf build/
