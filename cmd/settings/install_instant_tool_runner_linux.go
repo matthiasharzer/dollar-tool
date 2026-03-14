@@ -28,14 +28,14 @@ func InstallInstantToolRunner() error {
 		return err
 	}
 
-	alias := fmt.Sprintf("\nalias %s='dollar-tool run'\n", aliasName)
+	aliasLine := fmt.Sprintf("alias %s='dollar-tool run'", aliasName)
 
 	existing, err := os.ReadFile(configFile)
 	if err != nil {
 		return err
 	}
-	if strings.Contains(string(existing), alias) {
-		fmt.Printf("%s is already set up in %s\n", alias, configFile)
+	if strings.Contains(string(existing), aliasLine) {
+		fmt.Printf("%s is already set up in %s\n", aliasLine, configFile)
 		return nil
 	}
 
@@ -45,7 +45,7 @@ func InstallInstantToolRunner() error {
 	}
 	defer f.Close()
 
-	if _, err = f.WriteString(alias); err != nil {
+	if _, err = f.WriteString(fmt.Sprintf("\n%s\n", aliasLine)); err != nil {
 		return err
 	}
 
