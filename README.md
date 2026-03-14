@@ -16,6 +16,14 @@ To install `$`, download the [latest release](https://github.com/matthiasharzer/
  > - On Linux/macOS and other Unix-like systems, you can rename the downloaded file to `$` and invoke it as `$ <tool> [args...]` (you may need to quote it in some shells, for example `"$" /config --list`).
  > - On Windows, keep the default `dollar-tool.exe` name, or if you prefer the short name, rename it to `$.exe` (keeping the `.exe` extension so it can be found via `PATH`). In PowerShell, `$` is a variable sigil, so if you rename to `$.exe` you should invoke it with the call operator, for example: `& "$.exe" /config --list`.
 
+### One line installation using `curl`
+On Linux (amd64) systems, this will download the latest release and install it to `/usr/local/bin` under the name `$`:
+```bash
+curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/heads/main/install.sh | bash
+```
+> Note: The one-line installer currently targets the `linux/amd64` release artifact. On other operating systems or architectures, please follow the manual installation steps above.
+
+
 ## Tools
 Tools are binary executable files, which have a name and a download URL. You can add tools to `$` by providing the tool name and the download URL.
 
