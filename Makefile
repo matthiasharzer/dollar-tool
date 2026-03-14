@@ -1,13 +1,13 @@
 BUILD_VERSION ?= "unknown"
 
-OUTPUT_NAME := "$$"
+OUTPUT_NAME := "dollar-tool"
 
 clean:
 	@rm -rf build/
 
 build: clean
-	@GOOS=windows GOARCH=amd64 go build -o ./build/$(OUTPUT_NAME).exe -ldflags "-X github.com/matthiasharzer/dollar-tool/cmd/config.version=$(BUILD_VERSION)" ./main.go
-	@GOOS=linux GOARCH=amd64 go build -o ./build/$(OUTPUT_NAME) -ldflags "-X github.com/matthiasharzer/dollar-tool/cmd/config.version=$(BUILD_VERSION)" ./main.go
+	@GOOS=windows GOARCH=amd64 go build -o ./build/$(OUTPUT_NAME).exe -ldflags "-X github.com/matthiasharzer/dollar-tool/cmd/version.version=$(BUILD_VERSION)" ./main.go
+	@GOOS=linux GOARCH=amd64 go build -o ./build/$(OUTPUT_NAME) -ldflags "-X github.com/matthiasharzer/dollar-tool/cmd/version.version=$(BUILD_VERSION)" ./main.go
 
 qa: analyze test
 

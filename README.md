@@ -1,23 +1,28 @@
-# $
-`$` is a simple remote tool runner which allows you to execute tools by providing a download URL and tool-name.
+# dollar-tool
+`dollar-tool` is a simple remote tool runner which allows you to execute tools by providing a download URL and tool-name.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <br>
 
 ## Usage
+Install a tool:
 ```bash
-$ <tool> [args...]
+dollar-tool add --name <tool-name> --download-url <download-url>
+```
+Run a tool:
+```bash
+dollar-tool run <tool-name> [args...]
+```
+Add all tools to PATH:
+```bash
+dollar-tool settings --add-binaries-to-path
 ```
 
 ## Installation
-To install `$`, download the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest) and add the executable to your PATH.
- > This tool is supposed to be named `$` and not `dollar-tool`, but GitHub prohibits using `$` as an asset name.
- > 
- > - On Linux/macOS and other Unix-like systems, you can rename the downloaded file to `$` and invoke it as `$ <tool> [args...]` (you may need to quote it in some shells, for example `"$" /config --list`).
- > - On Windows, keep the default `dollar-tool.exe` name, or if you prefer the short name, rename it to `$.exe` (keeping the `.exe` extension so it can be found via `PATH`). In PowerShell, `$` is a variable sigil, so if you rename to `$.exe` you should invoke it with the call operator, for example: `& "$.exe" /config --list`.
+To install `dollar-tool`, download the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest) and add the executable to your PATH.
 
 ### One line installation using `curl`
-On Linux (amd64) systems, this will download the latest release and install it to `/usr/local/bin` under the name `$`:
+On Linux (amd64) systems, this will download the latest release and install it to `/usr/local/bin`.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/heads/main/install.sh | bash
 ```
@@ -25,42 +30,45 @@ curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/hea
 
 
 ## Tools
-Tools are binary executable files, which have a name and a download URL. You can add tools to `$` by providing the tool name and the download URL.
+Tools are binary executable files, which have a name and a download URL. You can add tools by providing the tool name and the download URL.
 
 ### Adding tools
 To add a single tool, run:
 ```bash
-$ /config --add "<tool-name> <download-url>"
+dollar-tool add --name <tool-name> --download-url <download-url>
 ```
 
 To import multiple tools from a file, run:
 ```bash
-$ /config --import <file-path>
+dollar-tool import --file <file-path>
 ```
 The file should contain lines in the format:
 ```
-<tool-name> <download-url>
+<tool-name-1> <download-url-1>
+<tool-name-2> <download-url-2>
+...
 ```
 
 ### Listing tools
 To list all available tools, run:
 ```bash
-$ /config --list
+dollar-tool list
 ```
 
 ### Removing tools
 To remove a tool, run:
 ```bash
-$ /config --delete <tool-name>
+dollar-tool remove --name <tool-name>
 ```
 
 To remove all tools, run:
 ```bash
-$ /config --clear
+dollar-tool remove --all
 ```
 
 ### Updating tools
 To update one tool or all tools (redownload the tool from its URL), run:
 ```bash
-$ /config --update (<tool-name> | all)
+dollar-tool update --name <tool-name>
 ```
+

@@ -6,30 +6,31 @@ import (
 	"path/filepath"
 )
 
-var ConfigFile string
-var ConfigHome string
+var ToolsFile string
+var DollarToolHome string
 var BinaryDirectory string
+var InstantToolRunnerAlias = "dt"
 
 func init() {
-	ConfigHome = os.Getenv("DOLLAR_CONFIG_HOME")
+	DollarToolHome = os.Getenv("DOLLAR_CONFIG_HOME")
 
-	if ConfigHome == "" {
+	if DollarToolHome == "" {
 		home, err := os.UserHomeDir()
 		if err != nil {
 			panic(err)
 		}
-		ConfigHome = filepath.ToSlash(fmt.Sprintf("%s/.dollar-tool", home))
+		DollarToolHome = filepath.ToSlash(fmt.Sprintf("%s/.dollar-tool", home))
 	}
-	err := os.MkdirAll(ConfigHome, 0700)
-	if err != nil && !os.IsExist(err) {
+	err := os.MkdirAll(DollarToolHome, 0700)
+	if err != nil {
 		panic(err)
 	}
 
-	ConfigFile = filepath.Join(ConfigHome, "config")
-	BinaryDirectory = filepath.Join(ConfigHome, "bin")
+	ToolsFile = filepath.Join(DollarToolHome, "tools")
+	BinaryDirectory = filepath.Join(DollarToolHome, "bin")
 
 	err = os.MkdirAll(BinaryDirectory, 0755)
-	if err != nil && !os.IsExist(err) {
+	if err != nil {
 		panic(err)
 	}
 }
