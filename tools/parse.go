@@ -28,6 +28,9 @@ func Parse(configFile string) (map[string]Tool, error) {
 	tools := make(map[string]Tool)
 	for scanner.Scan() {
 		line := scanner.Text()
+		if line == "" {
+			continue
+		}
 		tool, err := parseTool(line)
 		if err != nil {
 			return nil, err
