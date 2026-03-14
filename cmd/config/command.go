@@ -3,10 +3,12 @@ package config
 import (
 	"fmt"
 	"os"
+	"sort"
 
 	"github.com/matthiasharzer/dollar-tool/constant"
 	"github.com/matthiasharzer/dollar-tool/tools"
 	"github.com/spf13/cobra"
+	"golang.org/x/exp/maps"
 )
 
 var version = "unknown"
@@ -36,7 +38,7 @@ var Command = &cobra.Command{
 	Short: "Manage the configuration of dollar-tool",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if showVersion {
-			cmd.Printf("version %s", version)
+			cmd.Printf("version %s\n", version)
 			return nil
 		}
 
@@ -49,8 +51,13 @@ var Command = &cobra.Command{
 				cmd.Println("No tools configured.")
 				return nil
 			}
+
+			toolNames := maps.Keys(tools)
+			sort.Strings(toolNames)
+
 			cmd.Println("Configured tools:")
-			for name, tool := range tools {
+			for _, name := range toolNames {
+				tool := tools[name]
 				cmd.Printf("- %s: %s\n", name, tool.DownloadURL)
 			}
 			return nil
@@ -96,7 +103,7 @@ var Command = &cobra.Command{
 
 		if importFile != "" {
 			_, err := os.Stat(importFile)
-			if os.IsNotExist(err) {
+			if err != nil {
 				return err
 			}
 			importedTools, err := tools.Import(importFile)

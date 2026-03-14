@@ -1,9 +1,7 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"io/fs"
 	"os"
 
 	"github.com/matthiasharzer/dollar-tool/cmd/config"
@@ -27,38 +25,11 @@ func init() {
 	rootCommand.AddCommand(config.Command)
 }
 
-func fileExists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if errors.Is(err, fs.ErrNotExist) {
-		return false, nil
-	}
-	return false, err
-}
-
-func getTools(configFile string) (map[string]tools.Tool, error) {
-	exists, err := fileExists(configFile)
-	if err != nil {
-		return nil, err
-	}
-
-	if !exists {
-		return map[string]tools.Tool{}, nil
-	}
-	parsedTools, err := tools.Parse(configFile)
-	if err != nil {
-		return nil, err
-	}
-
-	return parsedTools, nil
-}
-
 func main() {
-	parsedTools, err := getTools(constant.ConfigFile)
+	parsedTools, err := tools.TryParse(constant.ConfigFile)
 	if err != nil {
-		panic(err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	for _, tool := range parsedTools {

@@ -14,10 +14,13 @@ func init() {
 	ConfigHome = os.Getenv("DOLLAR_CONFIG_HOME")
 
 	if ConfigHome == "" {
-		home, _ := os.UserHomeDir()
+		home, err := os.UserHomeDir()
+		if err != nil {
+			panic(err)
+		}
 		ConfigHome = filepath.ToSlash(fmt.Sprintf("%s/.dollar-tool", home))
 	}
-	err := os.MkdirAll(ConfigHome, os.ModePerm)
+	err := os.MkdirAll(ConfigHome, 0700)
 	if err != nil && !os.IsExist(err) {
 		panic(err)
 	}
@@ -25,7 +28,7 @@ func init() {
 	ConfigFile = filepath.Join(ConfigHome, "config")
 	BinaryDirectory = filepath.Join(ConfigHome, "bin")
 
-	err = os.MkdirAll(BinaryDirectory, os.ModePerm)
+	err = os.MkdirAll(BinaryDirectory, 0755)
 	if err != nil && !os.IsExist(err) {
 		panic(err)
 	}

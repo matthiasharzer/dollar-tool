@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"time"
 
 	"github.com/matthiasharzer/dollar-tool/constant"
 	"github.com/spf13/cobra"
@@ -34,18 +35,25 @@ func (t Tool) BinaryPath() string {
 	return fmt.Sprintf("%s/%s", constant.BinaryDirectory, t.Name)
 }
 
-func (t Tool) metaPath() string {
-	return fmt.Sprintf("%s/%s.meta", constant.BinaryDirectory, t.Name)
-}
-
 func (t Tool) Update() error {
-	resp, err := http.Get(t.DownloadURL)
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+	resp, err := client.Get(t.DownloadURL)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to download tool: received status code %d", resp.StatusCode)
+	}
+
 	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
 	out, err := os.Create(t.BinaryPath())
 	if err != nil {
 		return err
@@ -55,6 +63,12 @@ func (t Tool) Update() error {
 	_, err = out.Write(bodyBytes)
 	if err != nil {
 		return err
+	}
+
+	if runtime.GOOS != "windows" {
+		if err := os.Chmod(t.BinaryPath(), 0755); err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -10,9 +10,9 @@ import (
 )
 
 var reservedToolNames = map[string]bool{
-	"/config":     true,
-	"help":        true,
-	"completions": true,
+	"/config":    true,
+	"help":       true,
+	"completion": true,
 }
 
 func Add(name string, downloadURL string) error {
