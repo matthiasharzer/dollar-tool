@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 
 	"github.com/matthiasharzer/dollar/cmd/config"
+	"github.com/matthiasharzer/dollar/constant"
 	"github.com/matthiasharzer/dollar/tools"
 	"github.com/spf13/cobra"
 )
@@ -56,19 +56,7 @@ func getTools(configFile string) (map[string]tools.Tool, error) {
 }
 
 func main() {
-	configHome := os.Getenv("DOLLAR_CONFIG_HOME")
-
-	if configHome == "" {
-		home, _ := os.UserHomeDir()
-		configHome = filepath.ToSlash(fmt.Sprintf("%s/.dollar-tool", home))
-	}
-	err := os.MkdirAll(configHome, os.ModePerm)
-	if err != nil && !os.IsExist(err) {
-		panic(err)
-	}
-
-	configFile := filepath.Join(configHome, "config")
-	parsedTools, err := getTools(configFile)
+	parsedTools, err := getTools(constant.ConfigFile)
 	if err != nil {
 		panic(err)
 	}
