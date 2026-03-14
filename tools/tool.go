@@ -46,17 +46,13 @@ func (t Tool) Update() error {
 	defer resp.Body.Close()
 
 	bodyBytes, err := io.ReadAll(resp.Body)
-	out, err := os.Create(t.BinaryPath() + ".tmp")
+	out, err := os.Create(t.BinaryPath())
 	if err != nil {
 		return err
 	}
-	_, err = out.Write(bodyBytes)
-	if err != nil {
-		return err
-	}
-	out.Close()
+	defer out.Close()
 
-	err = os.Rename(out.Name(), t.BinaryPath())
+	_, err = out.Write(bodyBytes)
 	if err != nil {
 		return err
 	}
