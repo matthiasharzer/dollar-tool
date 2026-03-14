@@ -4,9 +4,9 @@ set -e
 OS="$(uname -s)"
 ARCH="$(uname -m)"
 
-# Only linux/amd64 is currently supported by the released binaries.
+# This install script currently only supports linux/amd64.
 if [ "$OS" != "Linux" ] || { [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "amd64" ]; }; then
-  echo "Error: dollar-tool currently only provides prebuilt binaries for linux/amd64." >&2
+  echo "Error: this install script currently only supports installing dollar-tool on linux/amd64." >&2
   echo "Detected platform: ${OS}/${ARCH}. Aborting installation." >&2
   exit 1
 fi
