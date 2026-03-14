@@ -11,7 +11,10 @@ $ <tool> [args...]
 
 ## Installation
 To install `$`, download the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest) and add the executable to your PATH.
-> This tool is supposed to be named `$` and not `dollar-tool`, but GitHub prohibits using `$` as an asset name. You can rename the downloaded file to `$` or continue using it with the name `dollar-tool`.
+ > This tool is supposed to be named `$` and not `dollar-tool`, but GitHub prohibits using `$` as an asset name.
+ > 
+ > - On Linux/macOS and other Unix-like systems, you can rename the downloaded file to `$` and invoke it as `$ <tool> [args...]` (you may need to quote it in some shells, for example `"$" /config --list`).
+ > - On Windows, keep the default `dollar-tool.exe` name, or if you prefer the short name, rename it to `$.exe` (keeping the `.exe` extension so it can be found via `PATH`). In PowerShell, `$` is a variable sigil, so if you rename to `$.exe` you should invoke it with the call operator, for example: `& "$.exe" /config --list`.
 
 ## Tools
 Tools are binary executable files, which have a name and a download URL. You can add tools to `$` by providing the tool name and the download URL.
