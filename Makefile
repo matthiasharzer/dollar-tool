@@ -1,6 +1,6 @@
 BUILD_VERSION ?= "unknown"
 
-OUTPUT_NAME := "$$"
+OUTPUT_NAME := "dollar-tool"
 
 clean:
 	@rm -rf build/

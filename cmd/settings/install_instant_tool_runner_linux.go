@@ -28,7 +28,7 @@ func InstallInstantToolRunner() error {
 		return err
 	}
 
-	alias := fmt.Sprintf("alias %s='dollar-tool run'", aliasName)
+	alias := fmt.Sprintf("alias %s='dollar-tool run\n'", aliasName)
 
 	existing, err := os.ReadFile(configFile)
 	if err != nil {
@@ -49,6 +49,7 @@ func InstallInstantToolRunner() error {
 		return err
 	}
 
-	fmt.Printf("Successfully added alias '%s' to %s. You can now use the instant tool runner by running '%s' in your terminal.\n", color.BlueString(alias), configFile, aliasName)
+	fmt.Printf("Successfully added alias '%s' shortcut to %s. You can now use the instant tool runner by running '%s' in your terminal.\n", color.BlueString(aliasName), configFile, aliasName)
+	fmt.Printf("Note: You may need to run 'source %s' or restart your terminal for changes to take effect.\n", configFile)
 	return nil
 }
