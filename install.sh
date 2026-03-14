@@ -12,7 +12,7 @@ if [ "$OS" != "Linux" ] || { [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "amd64" ]; 
 fi
 
 # Download the latest release
-curl -L -o '$' "https://github.com/matthiasharzer/dollar-tool/releases/latest/download/dollar-tool"
+curl -fsSL -o '$' "https://github.com/matthiasharzer/dollar-tool/releases/latest/download/dollar-tool"
 # Move the downloaded file to /usr/local/bin
 sudo mv '$' /usr/local/bin/
 # Add executable permissions to the file
