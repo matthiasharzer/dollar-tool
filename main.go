@@ -19,7 +19,7 @@ import (
 )
 
 var rootCommand = &cobra.Command{
-	Use: "$",
+	Use: "dollar-tool",
 	CompletionOptions: cobra.CompletionOptions{
 		HiddenDefaultCmd: true,
 	},

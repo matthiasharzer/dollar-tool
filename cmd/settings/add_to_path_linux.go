@@ -35,15 +35,20 @@ func discoverShellConfigFiles() ([]string, error) {
 	return configFiles, nil
 }
 
-func resolveShellConfigFile(options []string) (string, error) {
+func resolveShellConfigFile() (string, error) {
+	configFiles, err := discoverShellConfigFiles()
+	if err != nil {
+		return "", err
+	}
+
 	optionByFileName := make(map[string]string)
 	var optionFileNames []string
-	for _, option := range options {
+	for _, option := range configFiles {
 		optionByFileName[filepath.Base(option)] = option
 		optionFileNames = append(optionFileNames, filepath.Base(option))
 	}
 
-	if len(options) == 0 {
+	if len(configFiles) == 0 {
 		path, err := commandutil.StringPrompt("No shell configuration files found. Please enter the path to your shell configuration file", "")
 		if err != nil {
 			return "", err
@@ -64,12 +69,7 @@ func resolveShellConfigFile(options []string) (string, error) {
 }
 
 func AddBinariesToPath() error {
-	configFiles, err := discoverShellConfigFiles()
-	if err != nil {
-		return err
-	}
-
-	configFile, err := resolveShellConfigFile(configFiles)
+	configFile, err := resolveShellConfigFile()
 	if err != nil {
 		return err
 	}

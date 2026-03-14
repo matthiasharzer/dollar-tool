@@ -9,6 +9,7 @@ import (
 var ToolsFile string
 var DollarToolHome string
 var BinaryDirectory string
+var InstantToolRunnerAlias = "$"
 
 func init() {
 	DollarToolHome = os.Getenv("DOLLAR_CONFIG_HOME")
