@@ -6,9 +6,9 @@ import (
 	"io/fs"
 	"os"
 
-	"github.com/matthiasharzer/dollar/cmd/config"
-	"github.com/matthiasharzer/dollar/constant"
-	"github.com/matthiasharzer/dollar/tools"
+	"github.com/matthiasharzer/dollar-tool/cmd/config"
+	"github.com/matthiasharzer/dollar-tool/constant"
+	"github.com/matthiasharzer/dollar-tool/tools"
 	"github.com/spf13/cobra"
 )
 

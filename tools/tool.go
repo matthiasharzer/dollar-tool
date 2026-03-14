@@ -1,13 +1,14 @@
 package tools
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 
-	"github.com/matthiasharzer/dollar/constant"
+	"github.com/matthiasharzer/dollar-tool/constant"
 	"github.com/spf13/cobra"
 )
 
@@ -27,30 +28,33 @@ func (t Tool) Command() *cobra.Command {
 }
 
 func (t Tool) BinaryPath() string {
-	return fmt.Sprintf("%s/%s", constant.CacheDir, t.Name)
+	if runtime.GOOS == "windows" {
+		return fmt.Sprintf("%s\\%s.exe", constant.BinaryDirectory, t.Name)
+	}
+	return fmt.Sprintf("%s/%s", constant.BinaryDirectory, t.Name)
 }
 
 func (t Tool) metaPath() string {
-	return fmt.Sprintf("%s/%s.meta", constant.CacheDir, t.Name)
+	return fmt.Sprintf("%s/%s.meta", constant.BinaryDirectory, t.Name)
 }
 
 func (t Tool) Update() error {
-	out, err := os.Create(t.BinaryPath() + ".tmp")
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
 	resp, err := http.Get(t.DownloadURL)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
-	_, err = bufio.NewReader(resp.Body).WriteTo(out)
+	bodyBytes, err := io.ReadAll(resp.Body)
+	out, err := os.Create(t.BinaryPath() + ".tmp")
 	if err != nil {
 		return err
 	}
+	_, err = out.Write(bodyBytes)
+	if err != nil {
+		return err
+	}
+	out.Close()
 
 	err = os.Rename(out.Name(), t.BinaryPath())
 	if err != nil {
@@ -84,40 +88,4 @@ func (t Tool) Run(args []string) error {
 	}
 
 	return nil
-}
-
-func parseTool(line string) (Tool, error) {
-	var tool Tool
-	_, err := fmt.Sscanf(line, "%s %s", &tool.Name, &tool.DownloadURL)
-	if err != nil {
-		return Tool{}, err
-	}
-	return tool, nil
-}
-
-func Parse(configFile string) (map[string]Tool, error) {
-	file, err := os.Open(configFile)
-	if err != nil {
-		return nil, err
-	}
-
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	tools := make(map[string]Tool)
-	for scanner.Scan() {
-		line := scanner.Text()
-		tool, err := parseTool(line)
-		if err != nil {
-			return nil, err
-		}
-		tools[tool.Name] = tool
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, err
-	}
-
-	return tools, nil
 }

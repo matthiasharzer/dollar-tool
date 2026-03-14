@@ -8,7 +8,7 @@ import (
 
 var ConfigFile string
 var ConfigHome string
-var CacheDir string
+var BinaryDirectory string
 
 func init() {
 	ConfigHome = os.Getenv("DOLLAR_CONFIG_HOME")
@@ -23,9 +23,9 @@ func init() {
 	}
 
 	ConfigFile = filepath.Join(ConfigHome, "config")
-	CacheDir = filepath.Join(ConfigHome, "cache")
+	BinaryDirectory = filepath.Join(ConfigHome, "bin")
 
-	err = os.MkdirAll(CacheDir, os.ModePerm)
+	err = os.MkdirAll(BinaryDirectory, os.ModePerm)
 	if err != nil && !os.IsExist(err) {
 		panic(err)
 	}
