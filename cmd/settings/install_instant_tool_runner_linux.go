@@ -28,7 +28,7 @@ func InstallInstantToolRunner() error {
 		return err
 	}
 
-	alias := fmt.Sprintf("alias %s='dollar-tool run'\n", aliasName)
+	alias := fmt.Sprintf("\nalias %s='dollar-tool run'\n", aliasName)
 
 	existing, err := os.ReadFile(configFile)
 	if err != nil {
