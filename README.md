@@ -1,20 +1,51 @@
-# Go Application Template
-This is a simple template for developing Go applications. It includes a Makefile for building, testing, and analyzing the code, as well as a `.gitignore` file to exclude unnecessary files from version control.
+# $
+`$` is a simple remote tool runner which allows you to execute tools by providing a download URL and tool-name.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <br>
 
-## Todos after cloning
+## Usage
+```bash
+$ <tool> [args...]
+```
 
-### Files
-- [ ] Update `OUTPUT_NAME` in `Makefile` to your desired binary name.
-- [ ] Update the `module` in `go.mod` to your project's module path.
-- [ ] Update the copyright year and name in `LICENSE`.
-- [ ] Update this `README.md` to reflect your project details.
+## Tools
+Tools are binary executable files, which have a name and a download URL. You can add tools to `$` by providing the tool name and the download URL.
 
-### GitHub
-- [ ] Import the `ruleset.json` as a branch protection rule in your GitHub repository settings.
-  - [ ] Delete the `ruleset.json` file after importing.
-- [ ] Enable `Allow auto-merge` in the general settings of your GitHub repository.
-- [ ] Enable `Automatically delete head branches` in the general settings of your GitHub repository.
+### Adding tools
+To add a single tool, run:
+```bash
+$ /config --add "<tool-name> <download-url>"
+```
 
+To import multiple tools from a file, run:
+```bash
+$ /config --import <file-path>
+```
+The file should contain lines in the format:
+```
+<tool-name> <download-url>
+```
+
+### Listing tools
+To list all available tools, run:
+```bash
+$ /config --list
+```
+
+### Removing tools
+To remove a tool, run:
+```bash
+$ /config --delete <tool-name>
+```
+
+To remove all tools, run:
+```bash
+$ /config --clear
+```
+
+### Updating tools
+To update one tool or all tools (redownload the tool from its URL), run:
+```bash
+$ /config --update (<tool-name> | all)
+```
