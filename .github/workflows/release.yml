@@ -54,6 +54,10 @@ jobs:
       - name: Build artifacts
         run: |
           make build BUILD_VERSION=${{ needs.get-next-version.outputs.version }}
+      - name: Rename artifacts
+        run: |
+          mv build/$ build/$$
+          mv build/$.exe build/$$.exe
       - name: Release new version
         uses: ncipollo/release-action@v1
         with:
