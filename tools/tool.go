@@ -79,6 +79,14 @@ func (t Tool) IsInstalled() bool {
 	return err == nil
 }
 
+func (t Tool) Uninstall() error {
+	err := os.Remove(t.BinaryPath())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t Tool) Run(args []string) error {
 	if !t.IsInstalled() {
 		err := t.Update()

@@ -6,72 +6,63 @@ import (
 	"os"
 
 	"github.com/matthiasharzer/dollar-tool/constant"
-	"golang.org/x/exp/maps"
 )
 
-var reservedToolNames = map[string]bool{
-	"/config":    true,
-	"help":       true,
-	"completion": true,
-}
-
-func Add(name string, downloadURL string) error {
-	if reservedToolNames[name] {
-		return fmt.Errorf("tool name may not be one of %v", maps.Keys(reservedToolNames))
-	}
-
-	existingTools, err := TryParse(constant.ConfigFile)
+func Add(name string, downloadURL string) (Tool, error) {
+	existingTools, err := TryParse(constant.ToolsFile)
 	if err != nil {
-		return err
+		return Tool{}, err
 	}
 
 	if _, exists := existingTools[name]; exists {
-		return fmt.Errorf("tool with name %s already exists", name)
+		return Tool{}, fmt.Errorf("tool with name %s already exists", name)
 	}
 
-	existingTools[name] = Tool{
+	tool := Tool{
 		Name:        name,
 		DownloadURL: downloadURL,
 	}
+	existingTools[name] = tool
 
-	return write(constant.ConfigFile, existingTools)
+	err = write(constant.ToolsFile, existingTools)
+	if err != nil {
+		return Tool{}, err
+	}
+	return tool, nil
 }
 
-func Import(configFile string) (map[string]Tool, error) {
-	importedTools, err := Parse(configFile)
+func Import(toolsFile string) (map[string]Tool, error) {
+	importedTools, err := Parse(toolsFile)
 	if err != nil {
 		return nil, err
 	}
 
-	existingTools, err := TryParse(constant.ConfigFile)
+	existingTools, err := TryParse(constant.ToolsFile)
 	if err != nil {
 		return nil, err
 	}
 
 	for name, tool := range importedTools {
-		if reservedToolNames[name] {
-			return nil, fmt.Errorf("tool name may not be one of %v", maps.Keys(reservedToolNames))
-		}
 		if _, exists := existingTools[name]; exists {
 			return nil, fmt.Errorf("tool with name %s already exists", name)
 		}
 		existingTools[name] = tool
 	}
 
-	return existingTools, write(constant.ConfigFile, existingTools)
+	return existingTools, write(constant.ToolsFile, existingTools)
 }
 
-func Export(exportConfigFile string) error {
-	existingTools, err := TryParse(constant.ConfigFile)
+func Export(exportToolsFile string) error {
+	existingTools, err := TryParse(constant.ToolsFile)
 	if err != nil {
 		return err
 	}
 
-	return write(exportConfigFile, existingTools)
+	return write(exportToolsFile, existingTools)
 }
 
-func write(configFile string, tools map[string]Tool) error {
-	file, err := os.Create(configFile)
+func write(toolsFile string, tools map[string]Tool) error {
+	file, err := os.Create(toolsFile)
 	if err != nil {
 		return err
 	}
