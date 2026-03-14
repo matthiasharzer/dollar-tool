@@ -19,3 +19,4 @@ curl -fsSL --retry 3 --retry-delay 2 -o "${TMP_FILE}" "https://github.com/matthi
 sudo mv "${TMP_FILE}" /usr/local/bin/dollar-tool
 # Set standard executable permissions on the installed binary
 sudo chmod 0755 /usr/local/bin/dollar-tool
+sudo ln -s /usr/local/bin/dollar-tool /usr/local/bin/dt
