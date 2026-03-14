@@ -21,7 +21,10 @@ func BooleanPrompt(prompt string, defaultValue bool) (bool, error) {
 	for {
 		scanned := scanner.Scan()
 		if !scanned {
-			return false, fmt.Errorf("failed to read input")
+			if err := scanner.Err(); err != nil {
+				return false, fmt.Errorf("failed to read input: %w", err)
+			}
+			return false, fmt.Errorf("failed to read input: EOF")
 		}
 
 		text := scanner.Text()
@@ -53,7 +56,10 @@ func StringPrompt(prompt string, defaultValue string) (string, error) {
 
 		scanned := scanner.Scan()
 		if !scanned {
-			return "", fmt.Errorf("failed to read input")
+			if err := scanner.Err(); err != nil {
+				return "", fmt.Errorf("failed to read input: %w", err)
+			}
+			return "", fmt.Errorf("failed to read input: EOF")
 		}
 
 		text := scanner.Text()

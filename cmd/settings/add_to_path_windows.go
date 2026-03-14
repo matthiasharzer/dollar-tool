@@ -63,7 +63,7 @@ func AddBinariesToPath() error {
 
 	currentPath, _, err := k.GetStringValue("Path")
 	if errors.Is(err, registry.ErrNotExist) {
-		return fmt.Errorf("failed to read PATH: %v", err)
+		currentPath = ""
 	} else if err != nil {
 		return fmt.Errorf("failed to read PATH: %v", err)
 	}

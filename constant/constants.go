@@ -22,7 +22,7 @@ func init() {
 		DollarToolHome = filepath.ToSlash(fmt.Sprintf("%s/.dollar-tool", home))
 	}
 	err := os.MkdirAll(DollarToolHome, 0700)
-	if err != nil && !os.IsExist(err) {
+	if err != nil {
 		panic(err)
 	}
 
@@ -30,7 +30,7 @@ func init() {
 	BinaryDirectory = filepath.Join(DollarToolHome, "bin")
 
 	err = os.MkdirAll(BinaryDirectory, 0755)
-	if err != nil && !os.IsExist(err) {
+	if err != nil {
 		panic(err)
 	}
 }

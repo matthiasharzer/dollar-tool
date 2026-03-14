@@ -8,30 +8,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func init() {
+	parsedTools, err := tools.TryParse(constant.ToolsFile)
+	if err != nil {
+		panic(fmt.Sprintf("failed to parse tools: %v", err))
+	}
+
+	for _, tool := range parsedTools {
+		Command.AddCommand(tool.Command())
+	}
+	Command.SetHelpCommand(&cobra.Command{Hidden: true})
+}
+
 var Command = &cobra.Command{
 	Use: "run",
-	RunE: func(_ *cobra.Command, args []string) error {
-		if len(args) == 0 {
-			return fmt.Errorf("no tool name provided")
-		}
-
-		parsedTools, err := tools.TryParse(constant.ToolsFile)
-		if err != nil {
-			return err
-		}
-
-		toolName := args[0]
-		tool, exists := parsedTools[toolName]
-		if !exists {
-			return fmt.Errorf("tool with name '%s' does not exist", toolName)
-		}
-
-		toolArgs := args[1:]
-		err = tool.Run(toolArgs)
-		if err != nil {
-			return fmt.Errorf("failed to run tool '%s': %w", toolName, err)
-		}
-
-		return nil
+	CompletionOptions: cobra.CompletionOptions{
+		HiddenDefaultCmd: true,
 	},
 }

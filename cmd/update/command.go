@@ -29,7 +29,7 @@ var Command = &cobra.Command{
 		return nil
 	},
 	RunE: func(_ *cobra.Command, _ []string) error {
-		parsedTools, err := tools.TryParse(constant.DollarToolHome)
+		parsedTools, err := tools.TryParse(constant.ToolsFile)
 		if err != nil {
 			return err
 		}

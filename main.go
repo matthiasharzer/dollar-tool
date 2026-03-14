@@ -13,8 +13,6 @@ import (
 	"github.com/matthiasharzer/dollar-tool/cmd/settings"
 	"github.com/matthiasharzer/dollar-tool/cmd/update"
 	"github.com/matthiasharzer/dollar-tool/cmd/version"
-	"github.com/matthiasharzer/dollar-tool/constant"
-	"github.com/matthiasharzer/dollar-tool/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -41,17 +39,7 @@ func init() {
 }
 
 func main() {
-	parsedTools, err := tools.TryParse(constant.ToolsFile)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
-	for _, tool := range parsedTools {
-		rootCommand.AddCommand(tool.Command())
-	}
-
-	err = rootCommand.Execute()
+	err := rootCommand.Execute()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
