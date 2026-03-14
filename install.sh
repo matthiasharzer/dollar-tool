@@ -11,9 +11,11 @@ if [ "$OS" != "Linux" ] || { [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "amd64" ]; 
   exit 1
 fi
 
+
 # Download the latest release
-curl -fsSL -o '$' "https://github.com/matthiasharzer/dollar-tool/releases/latest/download/dollar-tool"
+TMP_FILE=$(mktemp)
+curl -fsSL -o "${TMP_FILE}" "https://github.com/matthiasharzer/dollar-tool/releases/latest/download/dollar-tool"
 # Move the downloaded file to /usr/local/bin
-sudo mv '$' /usr/local/bin/
+sudo mv "${TMP_FILE}" /usr/local/bin/'$'
 # Add executable permissions to the file
 sudo chmod +x /usr/local/bin/'$'
