@@ -10,7 +10,7 @@ import (
 	"github.com/matthiasharzer/dollar-tool/util/commandutil"
 )
 
-var commonShellConfigNamesOrdered = []string{
+var commonShellConfigNames = []string{
 	".zshrc",
 	".bashrc",
 	".profile",
@@ -25,7 +25,7 @@ func discoverShellConfigFiles() ([]string, error) {
 	}
 
 	var configFiles []string
-	for _, configName := range commonShellConfigNamesOrdered {
+	for _, configName := range commonShellConfigNames {
 		configPath := filepath.Join(homeDir, configName)
 		if _, err := os.Stat(configPath); err == nil {
 			configFiles = append(configFiles, configPath)
