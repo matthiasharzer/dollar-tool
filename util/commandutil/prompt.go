@@ -17,8 +17,8 @@ func BooleanPrompt(prompt string, defaultValue bool) (bool, error) {
 	} else {
 		defaultOptionString = "y/N"
 	}
-	fmt.Printf("%s [%s]: ", prompt, defaultOptionString)
 	for {
+		fmt.Printf("%s [%s]: ", prompt, defaultOptionString)
 		scanned := scanner.Scan()
 		if !scanned {
 			if err := scanner.Err(); err != nil {

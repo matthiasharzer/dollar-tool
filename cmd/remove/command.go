@@ -60,7 +60,7 @@ var Command = &cobra.Command{
 		}
 		_, found := existingTools[name]
 		if !found {
-			return fmt.Errorf("tool '%s' not found; run 'list  to see all available tools", name)
+			return fmt.Errorf("tool '%s' not found; run 'dollar-tool list' to see all available tools", name)
 		}
 
 		err = tools.Remove(name)

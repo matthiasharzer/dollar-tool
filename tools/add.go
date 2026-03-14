@@ -8,7 +8,20 @@ import (
 	"github.com/matthiasharzer/dollar-tool/constant"
 )
 
+func isReservedToolName(name string) bool {
+	switch name {
+	case "help", "completion":
+		return true
+	default:
+		return false
+	}
+}
+
 func Add(name string, downloadURL string) (Tool, error) {
+	if isReservedToolName(name) {
+		return Tool{}, fmt.Errorf("tool name %s is reserved and cannot be used", name)
+	}
+
 	existingTools, err := TryParse(constant.ToolsFile)
 	if err != nil {
 		return Tool{}, err
@@ -43,6 +56,9 @@ func Import(toolsFile string) (map[string]Tool, error) {
 	}
 
 	for name, tool := range importedTools {
+		if isReservedToolName(name) {
+			return nil, fmt.Errorf("tool name %s is reserved and cannot be used", name)
+		}
 		if _, exists := existingTools[name]; exists {
 			return nil, fmt.Errorf("tool with name %s already exists", name)
 		}

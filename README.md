@@ -11,7 +11,7 @@ dollar-tool add --name <tool-name> --download-url <download-url>
 ```
 Run a tool:
 ```bash
-dollar-tool run --name <tool-name> [args...]
+dollar-tool run <tool-name> [args...]
 ```
 Add all tools to PATH:
 ```bash
