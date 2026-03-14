@@ -56,8 +56,8 @@ jobs:
           make build BUILD_VERSION=${{ needs.get-next-version.outputs.version }}
       - name: Rename artifacts
         run: |
-          mv build/$ build/$$
-          mv build/$.exe build/$$.exe
+          mv build/$ build/dollar-tool
+          mv build/$.exe build/dollar-tool.exe
       - name: Release new version
         uses: ncipollo/release-action@v1
         with:

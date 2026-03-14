@@ -9,6 +9,10 @@
 $ <tool> [args...]
 ```
 
+## Installation
+To install `$`, download the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest) and add the executable to your PATH.
+> This tool is supposed to be named `$` and not `dollar-tool`, but GitHub prohibits using `$` as an asset name. You can rename the downloaded file to `$` or continue using it with the name `dollar-tool`.
+
 ## Tools
 Tools are binary executable files, which have a name and a download URL. You can add tools to `$` by providing the tool name and the download URL.
 
