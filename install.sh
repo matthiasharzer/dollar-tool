@@ -19,4 +19,18 @@ curl -fsSL --retry 3 --retry-delay 2 -o "${TMP_FILE}" "https://github.com/matthi
 sudo mv "${TMP_FILE}" /usr/local/bin/dollar-tool
 # Set standard executable permissions on the installed binary
 sudo chmod 0755 /usr/local/bin/dollar-tool
-sudo ln -s /usr/local/bin/dollar-tool /usr/local/bin/dt
+
+# Create a convenient "dt" symlink if appropriate, without failing on re-runs.
+if [ -L /usr/local/bin/dt ]; then
+  # Existing symlink: check if it already points to dollar-tool.
+  existing_target="$(readlink /usr/local/bin/dt || true)"
+  if [ "$existing_target" != "/usr/local/bin/dollar-tool" ]; then
+    echo "Warning: /usr/local/bin/dt already exists and points to '$existing_target', not to /usr/local/bin/dollar-tool. Skipping symlink creation." >&2
+  fi
+elif [ -e /usr/local/bin/dt ]; then
+  # Existing non-symlink file or directory: do not overwrite.
+  echo "Warning: /usr/local/bin/dt already exists and is not a symlink. Skipping symlink creation." >&2
+else
+  # No existing path: create the symlink.
+  sudo ln -s /usr/local/bin/dollar-tool /usr/local/bin/dt
+fi
