@@ -11,8 +11,8 @@ import (
 )
 
 var commonShellConfigNames = []string{
-	".bashrc",
 	".zshrc",
+	".bashrc",
 	".profile",
 	".bash_profile",
 	".bash_login",
