@@ -38,7 +38,7 @@ esac
 
 
 # Download the latest release
-TMP_FILE=$(mktemp)
+TMP_FILE="$(mktemp "${TMPDIR:-/tmp}/dollar-tool.XXXXXX")"
 curl -fsSL --retry 3 --retry-delay 2 -o "${TMP_FILE}" "https://github.com/matthiasharzer/dollar-tool/releases/latest/download/${DOWNLOAD_NAME}"
 # Move the downloaded file to /usr/local/bin
 sudo mv "${TMP_FILE}" /usr/local/bin/dollar-tool
