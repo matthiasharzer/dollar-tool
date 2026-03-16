@@ -12,7 +12,7 @@ case "${OS}" in
       echo "Detected platform: ${OS}/${ARCH}. Aborting installation." >&2
       exit 1
     fi
-    DOWNLOAD_NAME="dollar-tool"
+    DOWNLOAD_NAME="dollar-tool-linux-amd64"
     ;;
   Darwin)
     case "${ARCH}" in
