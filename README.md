@@ -22,11 +22,11 @@ dollar-tool settings --add-binaries-to-path
 To install `dollar-tool`, download the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest) and add the executable to your PATH.
 
 ### One line installation using `curl`
-On Linux (amd64) systems, this will download the latest release and install it to `/usr/local/bin`.
+On Linux (amd64) and macOS (amd64/arm64) systems, this will download the latest release and install it to `/usr/local/bin`.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/heads/main/install.sh | bash
 ```
-> Note: The one-line installer currently targets the `linux/amd64` release artifact. On other operating systems or architectures, please follow the manual installation steps above.
+> Note: The one-line installer supports Linux (amd64) and macOS (amd64 and arm64). On other operating systems or architectures, please follow the manual installation steps above.
 
 
 ## Tools
