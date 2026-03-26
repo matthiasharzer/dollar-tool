@@ -6,8 +6,8 @@ var addBinariesToPath bool
 var installInstantToolRunner bool
 
 func init() {
-	Command.Flags().BoolVarP(&addBinariesToPath, "add-binaries-to-path", "p", false, "Add the directory containing the tool binaries to the system PATH environment variable")
-	Command.Flags().BoolVarP(&installInstantToolRunner, "install-instant-tool-runner", "i", false, "Install the instant tool runner to run tools without installing them")
+	Command.Flags().BoolVarP(&addBinariesToPath, "add-binaries-to-path", "p", false, "add the directory containing the tool binaries to the system PATH environment variable")
+	Command.Flags().BoolVarP(&installInstantToolRunner, "install-instant-tool-runner", "i", false, "install the instant tool runner to run tools without installing them")
 }
 
 var Command = &cobra.Command{

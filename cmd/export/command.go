@@ -11,7 +11,7 @@ import (
 var filePath string
 
 func init() {
-	Command.Flags().StringVarP(&filePath, "file", "f", "", "Path to the file where the tools will be exported")
+	Command.Flags().StringVarP(&filePath, "file", "f", "", "path to the file where the tools will be exported")
 	err := Command.MarkFlagRequired("file")
 	if err != nil {
 		panic(err)
