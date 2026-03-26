@@ -14,8 +14,8 @@ var name string
 var all bool
 
 func init() {
-	Command.Flags().StringVarP(&name, "name", "n", "", "Name of the tool to remove")
-	Command.Flags().BoolVarP(&all, "all", "a", false, "Remove all tools")
+	Command.Flags().StringVarP(&name, "name", "n", "", "name of the tool to remove")
+	Command.Flags().BoolVarP(&all, "all", "a", false, "remove all tools")
 }
 
 var Command = &cobra.Command{

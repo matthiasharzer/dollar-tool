@@ -13,8 +13,8 @@ var toolName string
 var all bool
 
 func init() {
-	Command.Flags().StringVarP(&toolName, "name", "n", "", "Name of the tool to update")
-	Command.Flags().BoolVarP(&all, "all", "a", false, "Update all tools")
+	Command.Flags().StringVarP(&toolName, "name", "n", "", "name of the tool to update")
+	Command.Flags().BoolVarP(&all, "all", "a", false, "update all tools")
 }
 
 var Command = &cobra.Command{

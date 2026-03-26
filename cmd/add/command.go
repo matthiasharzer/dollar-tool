@@ -12,8 +12,8 @@ var name string
 var downloadURL string
 
 func init() {
-	Command.Flags().StringVarP(&name, "name", "n", "", "Name of the tool to add")
-	Command.Flags().StringVarP(&downloadURL, "download-url", "d", "", "Download URL of the tool to add")
+	Command.Flags().StringVarP(&name, "name", "n", "", "name of the tool to add")
+	Command.Flags().StringVarP(&downloadURL, "download-url", "d", "", "download URL of the tool to add")
 	err := Command.MarkFlagRequired("name")
 	if err != nil {
 		panic(err)
