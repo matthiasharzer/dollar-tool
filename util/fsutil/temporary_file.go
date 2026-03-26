@@ -7,6 +7,7 @@ func TemporaryFile() (string, func(), error) {
 	if err != nil {
 		return "", nil, err
 	}
+	defer file.Close()
 
 	cleanup := func() {
 		_ = os.Remove(file.Name())

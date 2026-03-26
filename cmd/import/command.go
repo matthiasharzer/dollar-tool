@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/matthiasharzer/dollar-tool/tools"
@@ -24,7 +25,9 @@ func init() {
 }
 
 func downloadFile(url string, destination string) error {
-	httpClient := &http.Client{}
+	httpClient := &http.Client{
+		Timeout: 30 * time.Second,
+	}
 	resp, err := httpClient.Get(url)
 	if err != nil {
 		return err
@@ -32,7 +35,7 @@ func downloadFile(url string, destination string) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to download file: %s", resp.Status)
+		return fmt.Errorf("unexpected HTTP status: %s", resp.Status)
 	}
 
 	outFile, err := os.Create(destination)
@@ -55,6 +58,7 @@ var Command = &cobra.Command{
 	},
 	RunE: func(_ *cobra.Command, _ []string) error {
 		toolsFilePath := filePath
+		fromName := filePath
 
 		if fileURL != "" {
 			tempFile, cleanup, err := fsutil.TemporaryFile()
@@ -69,6 +73,7 @@ var Command = &cobra.Command{
 			}
 
 			toolsFilePath = tempFile
+			fromName = fileURL
 		}
 
 		importedTools, err := tools.Import(toolsFilePath)
@@ -82,7 +87,7 @@ var Command = &cobra.Command{
 			}
 		}
 
-		fmt.Printf("Successfully imported and installed %s tool(s) from '%s'.\n", color.BlueString(strconv.Itoa(len(importedTools))), filePath)
+		fmt.Printf("Successfully imported and installed %s tool(s) from '%s'.\n", color.BlueString(strconv.Itoa(len(importedTools))), fromName)
 
 		return nil
 	},
