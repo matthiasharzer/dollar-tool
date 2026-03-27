@@ -10,11 +10,13 @@ import (
 )
 
 var Command = &cobra.Command{
-	Use: "list",
+	Use:   "list",
+	Short: "List all installed tools",
+	Long:  "List all installed tools with their installation status",
 	RunE: func(_ *cobra.Command, _ []string) error {
 		allTools, err := tools.TryParse(constant.ToolsFile)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse tools: %w", err)
 		}
 
 		if len(allTools) == 0 {

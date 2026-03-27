@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -14,14 +15,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var filePath string
-var fileURL string
+var isURL bool
 
 func init() {
-	Command.Flags().StringVarP(&filePath, "file", "f", "", "path of the file containing the tools to import")
-	Command.Flags().StringVarP(&fileURL, "url", "u", "", "URL to the file containing the tools to import")
-
-	Command.MarkFlagsMutuallyExclusive("file", "url")
+	Command.Flags().BoolVarP(&isURL, "url", "u", false, "indicates that the provided file path is a URL to download the tools file from")
 }
 
 func downloadFile(url string, destination string) error {
@@ -49,36 +46,36 @@ func downloadFile(url string, destination string) error {
 }
 
 var Command = &cobra.Command{
-	Use: "import",
-	PreRunE: func(cmd *cobra.Command, args []string) error {
-		if fileURL == "" && filePath == "" {
-			return fmt.Errorf("either --file or --url must be provided")
-		}
-		return nil
-	},
-	RunE: func(_ *cobra.Command, _ []string) error {
-		toolsFilePath := filePath
-		fromName := filePath
+	Use:   "import <file-path-or-url>",
+	Short: "Import tools from a file or URL",
+	Long: `Import tools from a specified file path or URL. The file should contain one tool per line in the format 'tool-name download-url'.
+If the --url flag is used, the provided argument will be treated as a URL, and the file will be downloaded before importing.`,
+	Args: cobra.ExactArgs(1),
+	RunE: func(_ *cobra.Command, args []string) error {
+		pathOrURL := args[0]
+		toolsFilePath := pathOrURL
 
-		if fileURL != "" {
+		if isURL {
 			tempFile, cleanup, err := fsutil.TemporaryFile()
 			if err != nil {
 				return err
 			}
 			defer cleanup()
 
-			err = downloadFile(fileURL, tempFile)
+			err = downloadFile(pathOrURL, tempFile)
 			if err != nil {
 				return fmt.Errorf("failed to download file: %w", err)
 			}
-
 			toolsFilePath = tempFile
-			fromName = fileURL
 		}
 
 		importedTools, err := tools.Import(toolsFilePath)
 		if err != nil {
-			return err
+			isPossibleURL := strings.HasPrefix(pathOrURL, "http://") || strings.HasPrefix(pathOrURL, "https://")
+			if isPossibleURL && !isURL {
+				return fmt.Errorf("failed to import tools '%s'. Did you forget to add the --url flag? Error: %w", pathOrURL, err)
+			}
+			return fmt.Errorf("failed to import tools from '%s': %w", pathOrURL, err)
 		}
 		for _, tool := range importedTools {
 			err = tool.Update()
@@ -87,7 +84,7 @@ var Command = &cobra.Command{
 			}
 		}
 
-		fmt.Printf("Successfully imported and installed %s tool(s) from '%s'.\n", color.BlueString(strconv.Itoa(len(importedTools))), fromName)
+		fmt.Printf("Successfully imported and installed %s tool(s) from '%s'.\n", color.BlueString(strconv.Itoa(len(importedTools))), pathOrURL)
 
 		return nil
 	},
