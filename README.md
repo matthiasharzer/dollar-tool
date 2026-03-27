@@ -19,15 +19,21 @@ This downloads the latest release binary to `/usr/local/bin/dollar-tool` and cre
 
 ### Manual installation
 
-Download the appropriate binary for your platform from the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest) and add it to your `PATH`.
+Download the appropriate binary for your platform from the [latest release](https://github.com/matthiasharzer/dollar-tool/releases/latest).
 
-| Platform        | Binary name               |
-|-----------------|---------------------------|
-| Linux amd64     | `dollar-tool-linux-amd64` |
-| macOS amd64     | `dollar-tool-darwin-amd64`|
-| macOS arm64     | `dollar-tool-darwin-arm64`|
-| Windows amd64   | `dollar-tool.exe`         |
+| Platform        | Binary name                    |
+|-----------------|--------------------------------|
+| Linux amd64     | `dollar-tool-linux-amd64`      |
+| macOS amd64     | `dollar-tool-darwin-amd64`     |
+| macOS arm64     | `dollar-tool-darwin-arm64`     |
+| Windows amd64   | `dollar-tool-windows-amd64.exe`|
 
+After downloading, move the binary to a directory on your `PATH` and either rename it or create a symlink so that the executable is called:
+
+- `dollar-tool` on Linux/macOS
+- `dollar-tool.exe` on Windows
+
+This ensures that the commands below (for example, `dollar-tool version`) work as written.
 ## Quick start
 
 ```bash
@@ -188,8 +194,8 @@ dollar-tool version
 
 `dollar-tool` stores its data under `~/.dollar-tool` by default. You can override this location by setting the `DOLLAR_CONFIG_HOME` environment variable.
 
-| Path                         | Purpose                              |
-|------------------------------|--------------------------------------|
-| `$DOLLAR_CONFIG_HOME/tools`  | Tool registry (name + download URL)  |
-| `$DOLLAR_CONFIG_HOME/bin`    | Downloaded tool binaries             |
+| Path                                                                 | Purpose                              |
+|----------------------------------------------------------------------|--------------------------------------|
+| `~/.dollar-tool/tools` (or `$DOLLAR_CONFIG_HOME/tools` when set)     | Tool registry (name + download URL)  |
+| `~/.dollar-tool/bin`   (or `$DOLLAR_CONFIG_HOME/bin` when set)       | Downloaded tool binaries             |
 
