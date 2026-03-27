@@ -14,7 +14,8 @@ curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/hea
 
 This downloads the latest release binary to `/usr/local/bin/dollar-tool` and creates a `dt` symlink for convenience.
 
-> **Note:** The one-line installer supports Linux (amd64) and macOS (amd64 and arm64). On other operating systems or architectures, use the manual installation steps below.
+> [!NOTE]
+> The one-line installer supports Linux (amd64) and macOS (amd64 and arm64). On other operating systems or architectures, use the manual installation steps below.
 
 ### Manual installation
 
@@ -160,7 +161,8 @@ The behaviour differs by platform:
 
 #### Install the instant tool runner
 
-> **Linux / macOS only.** This flag is not available on Windows.
+> [!WARNING]
+> This flag is only available on Linux and macOS. It is not available on Windows.
 
 Create a shell alias (default: `dtr`) that maps to `dollar-tool run`, letting you invoke tools without typing the full command:
 
