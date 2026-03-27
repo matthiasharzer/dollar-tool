@@ -8,21 +8,33 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var toolPareError error
+
 func init() {
 	parsedTools, err := tools.TryParse(constant.ToolsFile)
 	if err != nil {
-		panic(fmt.Sprintf("failed to parse tools: %v", err))
+		toolPareError = fmt.Errorf("failed to parse tools: %w", err)
+	} else {
+		for _, tool := range parsedTools {
+			Command.AddCommand(tool.Command())
+		}
+		Command.SetHelpCommand(&cobra.Command{Hidden: true})
 	}
-
-	for _, tool := range parsedTools {
-		Command.AddCommand(tool.Command())
-	}
-	Command.SetHelpCommand(&cobra.Command{Hidden: true})
 }
 
 var Command = &cobra.Command{
-	Use: "run",
+	Use:   "run",
+	Short: "Run a tool",
+	Long: `Run a tool by its name. You can run any installed tool by using this command followed by the tool's name and any arguments you want to pass to the tool.
+For example, if you have a tool named 'mytool', you can run it like this:
+	dollar-tool run mytool --arg1 value1 --arg2 value2`,
 	CompletionOptions: cobra.CompletionOptions{
 		HiddenDefaultCmd: true,
+	},
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		if toolPareError != nil {
+			return toolPareError
+		}
+		return cmd.Help()
 	},
 }

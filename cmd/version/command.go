@@ -9,7 +9,9 @@ import (
 var version = "unknown"
 
 var Command = &cobra.Command{
-	Use: "version",
+	Use:   "version",
+	Short: "Print the version of dollar-tool",
+	Long:  "Print the version of dollar-tool",
 	Run: func(_ *cobra.Command, _ []string) {
 		fmt.Printf("dollar-tool version %s\n", version)
 	},

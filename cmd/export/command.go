@@ -8,19 +8,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var filePath string
-
-func init() {
-	Command.Flags().StringVarP(&filePath, "file", "f", "", "path to the file where the tools will be exported")
-	err := Command.MarkFlagRequired("file")
-	if err != nil {
-		panic(err)
-	}
-}
-
 var Command = &cobra.Command{
-	Use: "export",
-	RunE: func(_ *cobra.Command, _ []string) error {
+	Use:   "export <file-path>",
+	Short: "Export the list of tools to a file",
+	Long:  "Export the list of tools to a file with one tool name per line. The file will be created if it does not exist, and overwritten if it does.",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(_ *cobra.Command, args []string) error {
+		filePath := args[0]
 		err := tools.Export(filePath)
 		if err != nil {
 			return err

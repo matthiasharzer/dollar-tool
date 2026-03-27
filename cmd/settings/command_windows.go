@@ -9,7 +9,9 @@ func init() {
 }
 
 var Command = &cobra.Command{
-	Use: "settings",
+	Use:   "settings",
+	Short: "Configure settings for the dollar tool",
+	Long:  "Configure settings for the dollar tool, such as adding the directory containing the tool binaries to the system PATH environment variable.",
 	RunE: func(_ *cobra.Command, _ []string) error {
 		if addBinariesToPath {
 			return AddBinariesToPath()

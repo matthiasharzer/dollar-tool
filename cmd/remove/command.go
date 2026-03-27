@@ -10,29 +10,45 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var name string
 var all bool
 
 func init() {
-	Command.Flags().StringVarP(&name, "name", "n", "", "name of the tool to remove")
 	Command.Flags().BoolVarP(&all, "all", "a", false, "remove all tools")
 }
 
 var Command = &cobra.Command{
-	Use: "remove",
+	Use:   "remove [tool names]",
+	Short: "Remove specified tools or all tools if --all flag is used",
+	Long: `Remove the specified tools by their names. If the --all flag is used, all tools will be removed.
+You cannot specify tool names when using the --all flag.`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		if name != "" && all {
-			return fmt.Errorf("cannot use --name and --all flags together")
+		if len(args) > 0 && all {
+			return fmt.Errorf("cannot specify tool names when using --all flag")
 		}
-		if name == "" && !all {
-			return fmt.Errorf("either --name or --all flag must be provided")
+		if len(args) == 0 && !all {
+			return cmd.Help()
 		}
 		return nil
 	},
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		parsedTools, err := tools.TryParse(constant.ToolsFile)
 		if err != nil {
 			return err
+		}
+
+		for _, toolName := range args {
+			tool, ok := parsedTools[toolName]
+			if !ok {
+				fmt.Printf("Tool '%s' not found. Skipping.\n", color.BlueString(toolName))
+				continue
+			}
+			err = tools.Remove(tool.Name)
+			if err != nil {
+				fmt.Printf("Failed to remove tool '%s': %v. Skipping.\n", color.BlueString(toolName), err)
+				continue
+			}
+			fmt.Printf("Tool '%s' removed successfully.\n", color.BlueString(toolName))
+			delete(parsedTools, toolName)
 		}
 
 		if all {
@@ -53,21 +69,6 @@ var Command = &cobra.Command{
 			}
 			return nil
 		}
-
-		existingTools, err := tools.TryParse(constant.ToolsFile)
-		if err != nil {
-			return err
-		}
-		_, found := existingTools[name]
-		if !found {
-			return fmt.Errorf("tool '%s' not found; run 'dollar-tool list' to see all available tools", name)
-		}
-
-		err = tools.Remove(name)
-		if err != nil {
-			return err
-		}
-		fmt.Printf("Tool '%s' removed successfully.\n", color.BlueString(name))
 		return nil
 	},
 }
