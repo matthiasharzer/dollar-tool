@@ -19,7 +19,7 @@ var Command = &cobra.Command{
 		downloadURL := args[1]
 
 		if !strings.HasPrefix(downloadURL, "http://") && !strings.HasPrefix(downloadURL, "https://") {
-			fmt.Printf(color.YellowString("Warning: The provided download URL '%s' may not be a valid URL since it does not start with 'http://' or 'https://'. Please ensure that the URL is correct.\n", downloadURL))
+			fmt.Println(color.YellowString("Warning: The provided download URL '%s' may not be a valid URL since it does not start with 'http://' or 'https://'. Please ensure that the URL is correct.", downloadURL))
 		}
 
 		tool, err := tools.Add(name, downloadURL)
