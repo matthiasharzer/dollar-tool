@@ -100,7 +100,7 @@ dollar-tool import --url <url>
 **Example tools file:**
 
 ```
-mytool   https://example.com/mytool-linux-amd64
+mytool    https://example.com/mytool-linux-amd64
 othertool https://example.com/othertool-linux-amd64
 ```
 
