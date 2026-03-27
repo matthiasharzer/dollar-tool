@@ -147,15 +147,20 @@ dollar-tool remove --all
 
 #### Add tool binaries to PATH
 
-Append the `dollar-tool` binary directory to your shell's `PATH` so you can call managed tools directly by name:
+Append the `dollar-tool` binary directory to your `PATH` so you can call managed tools directly by name:
 
 ```bash
 dollar-tool settings --add-binaries-to-path
 ```
 
-This modifies your shell configuration file (e.g. `.zshrc`, `.bashrc`). Reload your shell or run `source <config-file>` for the change to take effect.
+The behaviour differs by platform:
+
+- **Linux / macOS** — Appends an `export PATH=…` line to your shell configuration file (e.g. `.zshrc`, `.bashrc`). You will be prompted to choose or enter the config file to modify. Reload your shell or run `source <config-file>` for the change to take effect.
+- **Windows** — Writes the binary directory directly to the `Path` value in the `HKCU\Environment` registry key. The change takes effect in new processes without restarting the machine.
 
 #### Install the instant tool runner
+
+> **Linux / macOS only.** This flag is not available on Windows.
 
 Create a shell alias (default: `dtr`) that maps to `dollar-tool run`, letting you invoke tools without typing the full command:
 
@@ -163,7 +168,7 @@ Create a shell alias (default: `dtr`) that maps to `dollar-tool run`, letting yo
 dollar-tool settings --install-instant-tool-runner
 ```
 
-After setup you can run tools like:
+You will be prompted for the alias name and the shell configuration file to modify. After setup you can run tools like:
 
 ```bash
 dtr mytool --version
