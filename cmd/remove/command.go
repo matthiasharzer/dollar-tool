@@ -26,7 +26,7 @@ You cannot specify tool names when using the --all flag.`,
 			return fmt.Errorf("cannot specify tool names when using --all flag")
 		}
 		if len(args) == 0 && !all {
-			return cmd.Help()
+			return fmt.Errorf("please specify at least one tool name or use the --all flag")
 		}
 		return nil
 	},
@@ -39,13 +39,11 @@ You cannot specify tool names when using the --all flag.`,
 		for _, toolName := range args {
 			tool, ok := parsedTools[toolName]
 			if !ok {
-				fmt.Printf("Tool '%s' not found. Skipping.\n", color.BlueString(toolName))
-				continue
+				return fmt.Errorf("tool '%s' not found", toolName)
 			}
 			err = tools.Remove(tool.Name)
 			if err != nil {
-				fmt.Printf("Failed to remove tool '%s': %v. Skipping.\n", color.BlueString(toolName), err)
-				continue
+				return fmt.Errorf("failed to remove tool '%s': %w", toolName, err)
 			}
 			fmt.Printf("Tool '%s' removed successfully.\n", color.BlueString(toolName))
 			delete(parsedTools, toolName)

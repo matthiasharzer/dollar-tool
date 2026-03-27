@@ -14,8 +14,8 @@ func init() {
 
 var Command = &cobra.Command{
 	Use:   "settings",
-	Short: "Configure settings for the dollar tool",
-	Long:  "Configure settings for the dollar tool, such as adding the directory containing the tool binaries to the system PATH environment variable or installing the instant tool runner to run tools without installing them.",
+	Short: "Configure settings for dollar-tool",
+	Long:  "Configure settings for dollar-tool, such as adding the directory containing the tool binaries to the system PATH environment variable or installing the instant tool runner to run tools without installing them.",
 	RunE: func(_ *cobra.Command, _ []string) error {
 		if addBinariesToPath {
 			return AddBinariesToPath()

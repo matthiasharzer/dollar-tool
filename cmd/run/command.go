@@ -8,12 +8,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var toolPareError error
+var toolParseError error
 
 func init() {
 	parsedTools, err := tools.TryParse(constant.ToolsFile)
 	if err != nil {
-		toolPareError = fmt.Errorf("failed to parse tools: %w", err)
+		toolParseError = fmt.Errorf("failed to parse tools: %w", err)
 	} else {
 		for _, tool := range parsedTools {
 			Command.AddCommand(tool.Command())
@@ -32,8 +32,8 @@ For example, if you have a tool named 'mytool', you can run it like this:
 		HiddenDefaultCmd: true,
 	},
 	RunE: func(cmd *cobra.Command, _ []string) error {
-		if toolPareError != nil {
-			return toolPareError
+		if toolParseError != nil {
+			return toolParseError
 		}
 		return cmd.Help()
 	},
