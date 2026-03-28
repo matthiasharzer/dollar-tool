@@ -7,12 +7,19 @@ ARCH="$(uname -m)"
 # Determine the download URL based on OS and architecture.
 case "${OS}" in
   Linux)
-    if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "amd64" ]; then
-      echo "Error: on Linux, only amd64 is supported." >&2
-      echo "Detected platform: ${OS}/${ARCH}. Aborting installation." >&2
-      exit 1
-    fi
-    DOWNLOAD_NAME="dollar-tool-linux-amd64"
+    case "${ARCH}" in
+      x86_64|amd64)
+        DOWNLOAD_NAME="dollar-tool-linux-amd64"
+        ;;
+      aarch64|arm64)
+        DOWNLOAD_NAME="dollar-tool-linux-arm64"
+        ;;
+      *)
+        echo "Error: on Linux, only amd64 and arm64 are supported." >&2
+        echo "Detected platform: ${OS}/${ARCH}. Aborting installation." >&2
+        exit 1
+        ;;
+    esac
     ;;
   Darwin)
     case "${ARCH}" in
@@ -30,8 +37,9 @@ case "${OS}" in
     esac
     ;;
   *)
-    echo "Error: this install script supports Linux/amd64 and macOS (amd64/arm64)." >&2
+    echo "Error: this install script supports Linux (amd64/arm64) and macOS (amd64/arm64)." >&2
     echo "Detected platform: ${OS}/${ARCH}. Aborting installation." >&2
+    echo "Windows users: please use install.ps1 or download the binary manually from https://github.com/matthiasharzer/dollar-tool/releases/latest" >&2
     exit 1
     ;;
 esac

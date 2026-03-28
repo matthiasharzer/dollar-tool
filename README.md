@@ -6,7 +6,7 @@
 
 ## Installation
 
-### One-line install (Linux amd64 / macOS amd64 & arm64)
+### One-line install (Linux amd64 & arm64 / macOS amd64 & arm64)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/heads/main/install.sh | bash
@@ -15,7 +15,23 @@ curl -fsSL https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/hea
 This downloads the latest release binary to `/usr/local/bin/dollar-tool` and creates a `dt` symlink for convenience.
 
 > [!NOTE]
-> The one-line installer supports Linux (amd64) and macOS (amd64 and arm64). On other operating systems or architectures, use the manual installation steps below.
+> The one-line installer supports Linux (amd64 and arm64) and macOS (amd64 and arm64). On other operating systems or architectures, use the manual installation steps below.
+
+### One-line install (Windows amd64)
+
+```powershell
+irm https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/heads/main/install.ps1 | iex
+```
+
+This downloads the latest release binary to `%LOCALAPPDATA%\Programs\dollar-tool` and adds that directory to your user `PATH`. It also copies the binary as `dt.exe` for convenience.
+
+> [!NOTE]
+> Piping directly to `iex` runs the script without reviewing it first. If you prefer, download the script first, inspect it, and then execute it manually:
+> ```powershell
+> Invoke-WebRequest -Uri https://raw.githubusercontent.com/matthiasharzer/dollar-tool/refs/heads/main/install.ps1 -OutFile install.ps1
+> # Review install.ps1, then:
+> .\install.ps1
+> ```
 
 ### Manual installation
 
@@ -24,6 +40,7 @@ Download the appropriate binary for your platform from the [latest release](http
 | Platform        | Binary name                    |
 |-----------------|--------------------------------|
 | Linux amd64     | `dollar-tool-linux-amd64`      |
+| Linux arm64     | `dollar-tool-linux-arm64`      |
 | macOS amd64     | `dollar-tool-darwin-amd64`     |
 | macOS arm64     | `dollar-tool-darwin-arm64`     |
 | Windows amd64   | `dollar-tool-windows-amd64.exe`|
