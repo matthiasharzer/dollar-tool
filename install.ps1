@@ -17,8 +17,7 @@ $ErrorActionPreference = 'Stop'
 $arch = $env:PROCESSOR_ARCHITEW6432
 if (-not $arch) { $arch = $env:PROCESSOR_ARCHITECTURE }
 if ($arch -ne 'AMD64') {
-    Write-Error "Error: on Windows, only amd64 is supported. Detected architecture: $arch. Aborting installation."
-    exit 1
+    throw "Error: on Windows, only amd64 is supported. Detected architecture: $arch. Aborting installation."
 }
 
 $downloadName = 'dollar-tool-windows-amd64.exe'
@@ -38,8 +37,7 @@ $tmpFile = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRan
 try {
     Invoke-WebRequest -Uri $releaseUrl -OutFile $tmpFile -UseBasicParsing
 } catch {
-    Write-Error "Failed to download dollar-tool: $_"
-    exit 1
+    throw "Failed to download dollar-tool: $_"
 }
 
 # Move it into place.
@@ -53,7 +51,9 @@ Write-Host "Installed dollar-tool to $binaryPath"
 # Add the install directory to the user PATH if it isn't already there.
 $userPath = [System.Environment]::GetEnvironmentVariable('Path', 'User')
 $pathEntries = $userPath -split ';' | Where-Object { $_ -ne '' }
-if ($pathEntries -notcontains $installDir) {
+$normalizedInstallDir = $installDir.TrimEnd('\', '/').ToLowerInvariant()
+$normalizedPathEntries = $pathEntries | ForEach-Object { $_.TrimEnd('\', '/').ToLowerInvariant() }
+if ($normalizedPathEntries -notcontains $normalizedInstallDir) {
     $newPath = ($pathEntries + $installDir) -join ';'
     [System.Environment]::SetEnvironmentVariable('Path', $newPath, 'User')
     Write-Host "Added $installDir to your user PATH."
